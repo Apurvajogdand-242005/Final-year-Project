@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Existing Complaints - Civic Connect</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+     <!-- Header -->
+  <header>
+    <div class="header">
+      <img src="/static/logo.png" alt="Logo" class="logo">
+      <h1 class="site-title">Civic Connect</h1>
+    </div>
+    <nav class="navbar">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <% if (typeof userId !== 'undefined' && userId) { %>
+          <!-- Logged in user navigation -->
+          <li><a href="/submit">Submit Complaint</a></li>
+          <li><a href="/dashboard">My Dashboard</a></li>
+          <li><a href="/status">Check Status</a></li>
+          <li><a href="/about">About Us</a></li>
+          <li><a href="/logout">Logout</a></li>
+          <li><span>Welcome, <%= username %>!</span></li>
+        <% } else { %>
+          <!-- Not logged in navigation -->
+          <li><a href="/login">User Login</a></li>
+          <li><a href="/register">User Register</a></li>
+          <li><a href="/admin/login">Admin Login</a></li>
+          <li><a href="/about">About Us</a></li>
+        <% } %>
+      </ul>
+    </nav>
+  </header>
+  <div class="container">
+    <h1>Existing Complaints</h1>
+
+    <!-- Display message when complaint already exists -->
+    <% if (typeof message !== 'undefined' && message === 'complaint_exists') { %>
+      <div class="alert alert-warning" style="background-color: #fff3cd; color: #856404; padding: 15px; border-radius: 5px; margin-bottom: 20px; border: 1px solid #ffeaa7;">
+        <strong>⚠️ Complaint Already Exists!</strong><br>
+        A complaint for <strong><%= messageLocation %></strong> in category <strong><%= messageCategory %></strong> already exists.
+        <br><br>
+        <strong>Existing Complaint:</strong> <a href="#complaint-<%= existingId %>" style="color: #856404; text-decoration: underline;">"<%= existingTitle %>"</a> (ID: <%= existingId %>)
+        <br><br>
+        Please vote for the existing complaint instead of creating a duplicate. This helps us prioritize issues more effectively!
+      </div>
+    <% } %>
+
+    <!-- Search Section -->
+    <div class="search-section" style="margin-bottom: 30px; padding: 20px; background-color: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;">
+      <h3 style="margin-top: 0; color: #495057;">🔍 Search Complaints</h3>
+      <div class="search-form" style="display: flex; gap: 15px; align-items: end; flex-wrap: wrap;">
+        <div style="flex: 2; min-width: 200px;">
+          <label for="searchInput" style="display: block; margin-bottom: 5px; font-weight: bold;">Search by Title/Description:</label>
+          <input type="text" id="searchInput" placeholder="Enter keywords to search..." style="width: 100%; padding: 10px; border: 1px solid #ced4da; border-radius: 4px; font-size: 14px;">
+        </div>
+        <div style="flex: 1; min-width: 150px;">
+          <label for="categoryFilter" style="display: block; margin-bottom: 5px; font-weight: bold;">Filter by Category:</label>
+          <select id="categoryFilter" style="width: 100%; padding: 10px; border: 1px solid #ced4da; border-radius: 4px; font-size: 14px;">
+            <option value="">All Categories</option>
+            <option value="Road Issues">Road Issues</option>
+            <option value="Water Problems">Water Problems</option>
+            <option value="Street Lights">Street Lights</option>
+            <option value="Garbage">Garbage</option>
+            <option value="Noise Pollution">Noise Pollution</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div style="flex: 1; min-width: 150px;">
+          <label for="locationFilter" style="display: block; margin-bottom: 5px; font-weight: bold;">Filter by Location:</label>
+          <input type="text" id="locationFilter" placeholder="Enter location..." style="width: 100%; padding: 10px; border: 1px solid #ced4da; border-radius: 4px; font-size: 14px;">
+        </div>
+        <div style="flex: 0 0 auto;">
+          <button id="searchBtn" style="padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; font-weight: bold;">Search</button>
+          <button id="clearBtn" style="padding: 10px 20px; background-color: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; margin-left: 10px;">Clear</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search Results Info -->
+    <div id="searchResultsInfo" style="margin-bottom: 20px; font-weight: bold; color: #495057; display: none;"></div>
+
+    <table class="table-box" id="complaintsTable">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Title</th>
+          <th>Category</th>
+          <th>Description</th>
+          <th>Image</th>
+          <th>Location</th>
+          <th>Status</th>
+          <th>Votes</th>
+          <th>Submitted By</th>
+          <th>Date Submitted</th>
+          <th>Date Resolved</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (complaints && complaints.length > 0) { %>
+          <% complaints.forEach(c => { %>
+            <tr>
+              <td><%= c.id %></td>
+              <td><%= c.title %></td>
+              <td><%= c.category %></td>
+              <td><%= c.description %></td>
+              <td>
+                <% if (c.image_path) { %>
+                  <img src="/uploads/<%= c.image_path %>" alt="Complaint Image" style="max-width: 100px; max-height: 100px; object-fit: cover;">
+                <% } else { %>
+                  No Image
+                <% } %>
+              </td>
+              <td><%= c.location %></td>
+              <td><%= c.status || 'Pending' %></td>
+              <td><%= c.votes %></td>
+              <td><%= c.username || 'Anonymous' %></td>
+              <td><%= c.submitted_date ? new Date(c.submitted_date).toLocaleDateString() : 'N/A' %></td>
+              <td><%= c.resolved_date ? new Date(c.resolved_date).toLocaleDateString() : '-' %></td>
+              <td>
+                <!-- <a href="/vote/<%= c.id %>" class="btn">Vote</a> -->
+                 <form action="/vote/<%= c.id %>" method="POST" style="display: inline;">
+                  <button type="submit" class="btn">Vote</button>
+                  </form>
+            </td>
+            </tr>
+          <% }) %>
+        <% } else { %>
+          <tr><td colspan="12">No complaints available</td></tr>
+        <% } %>
+      </tbody>
+    </table>
+    <h2>Complaint Analytics</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 20px; margin-bottom: 30px;">
+      <!-- Vote Statistics Bar Chart -->
+      <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; border: 1px solid #dee2e6;">
+        <h3 style="margin-top: 0; color: #495057;">📊 Vote Distribution</h3>
+        <canvas id="voteChart" width="400" height="200"></canvas>
+      </div>
+
+      <!-- Category Distribution Pie Chart -->
+      <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; border: 1px solid #dee2e6;">
+        <h3 style="margin-top: 0; color: #495057;">📈 Category Breakdown</h3>
+        <canvas id="categoryChart" width="400" height="200"></canvas>
+      </div>
+
+      <!-- Status Distribution Doughnut Chart -->
+      <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; border: 1px solid #dee2e6;">
+        <h3 style="margin-top: 0; color: #495057;">🔄 Status Overview</h3>
+        <canvas id="statusChart" width="400" height="200"></canvas>
+      </div>
+
+      <!-- Monthly Submissions Line Chart -->
+      <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; border: 1px solid #dee2e6;">
+        <h3 style="margin-top: 0; color: #495057;">📅 Submission Trends</h3>
+        <canvas id="monthlyChart" width="400" height="200"></canvas>
+      </div>
+    </div>
+
+<!-- Load Chart.js first -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Now your chart scripts -->
+<script>
+  const complaints = <%- JSON.stringify(complaints||[]) %>;
+
+  // Vote Distribution Bar Chart
+  const voteLabels = complaints.map(c => c.title || 'Complaint ' + c.id);
+  const votes = complaints.map(c => c.votes);
+
+  const voteCtx = document.getElementById('voteChart').getContext('2d');
+  new Chart(voteCtx, {
+    type: 'bar',
+    data: {
+      labels: voteLabels,
+      datasets: [{
+        label: 'Vote Count',
+        data: votes,
+        backgroundColor: votes.map((_, index) => {
+          const colors = [
+            'rgba(255, 99, 132, 0.8)',
+            'rgba(54, 162, 235, 0.8)',
+            'rgba(255, 205, 86, 0.8)',
+            'rgba(75, 192, 192, 0.8)',
+            'rgba(153, 102, 255, 0.8)',
+            'rgba(255, 159, 64, 0.8)',
+            'rgba(199, 199, 199, 0.8)',
+            'rgba(83, 102, 255, 0.8)',
+            'rgba(255, 99, 255, 0.8)',
+            'rgba(99, 255, 132, 0.8)'
+          ];
+          return colors[index % colors.length];
+        }),
+        borderColor: votes.map((_, index) => {
+          const colors = [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 205, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)',
+            'rgba(199, 199, 199, 1)',
+            'rgba(83, 102, 255, 1)',
+            'rgba(255, 99, 255, 1)',
+            'rgba(99, 255, 132, 1)'
+          ];
+          return colors[index % colors.length];
+        }),
+        borderWidth: 2,
+        borderRadius: 4,
+        borderSkipped: false,
+      }]
+    },
+    options: {
+      responsive: true,
+      animation: {
+        duration: 2000,
+        easing: 'easeInOutQuart'
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          precision: 0
+        }
+      },
+      plugins: {
+        legend: {
+          display: false
+        },
+        tooltip: {
+          backgroundColor: 'rgba(0,0,0,0.8)',
+          titleColor: '#fff',
+          bodyColor: '#fff',
+          callbacks: {
+            title: function(context) {
+              return context[0].label;
+            },
+            label: function(context) {
+              return 'Votes: ' + context.parsed.y;
+            }
+          }
+        }
+      }
+    }
+  });
+
+  // Category Distribution Pie Chart
+  const categoryCounts = {};
+  complaints.forEach(c => {
+    categoryCounts[c.category] = (categoryCounts[c.category] || 0) + 1;
+  });
+  const categoryLabels = Object.keys(categoryCounts);
+  const categoryData = Object.values(categoryCounts);
+
+  const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+  new Chart(categoryCtx, {
+    type: 'pie',
+    data: {
+      labels: categoryLabels,
+      datasets: [{
+        data: categoryData,
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.7)',
+          'rgba(54, 162, 235, 0.7)',
+          'rgba(255, 205, 86, 0.7)',
+          'rgba(75, 192, 192, 0.7)',
+          'rgba(153, 102, 255, 0.7)',
+          'rgba(255, 159, 64, 0.7)'
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 205, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)'
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      animation: {
+        duration: 1500,
+        easing: 'easeOutBounce'
+      },
+      plugins: {
+        legend: {
+          position: 'bottom'
+        },
+        tooltip: {
+          backgroundColor: 'rgba(0,0,0,0.8)',
+          titleColor: '#fff',
+          bodyColor: '#fff',
+          callbacks: {
+            label: function(context) {
+              const total = context.dataset.data.reduce((a, b) => a + b, 0);
+              const percentage = ((context.parsed / total) * 100).toFixed(1);
+              return context.label + ': ' + context.parsed + ' (' + percentage + '%)';
+            }
+          }
+        }
+      }
+    }
+  });
+
+  // Status Distribution Doughnut Chart
+  const statusCounts = {};
+  complaints.forEach(c => {
+    const status = c.status || 'Pending';
+    statusCounts[status] = (statusCounts[status] || 0) + 1;
+  });
+  const statusLabels = Object.keys(statusCounts);
+  const statusData = Object.values(statusCounts);
+
+  const statusCtx = document.getElementById('statusChart').getContext('2d');
+  new Chart(statusCtx, {
+    type: 'doughnut',
+    data: {
+      labels: statusLabels,
+      datasets: [{
+        data: statusData,
+        backgroundColor: [
+          'rgba(255, 193, 7, 0.7)',   // Pending - Yellow
+          'rgba(40, 167, 69, 0.7)',   // Resolved - Green
+          'rgba(220, 53, 69, 0.7)',   // In Progress - Red
+          'rgba(23, 162, 184, 0.7)'   // Other - Blue
+        ],
+        borderColor: [
+          'rgba(255, 193, 7, 1)',
+          'rgba(40, 167, 69, 1)',
+          'rgba(220, 53, 69, 1)',
+          'rgba(23, 162, 184, 1)'
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'bottom'
+        }
+      }
+    }
+  });
+
+  // Monthly Submissions Line Chart
+  const monthlyCounts = {};
+  complaints.forEach(c => {
+    if (c.submitted_date) {
+      const date = new Date(c.submitted_date);
+      const monthYear = date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
+      monthlyCounts[monthYear] = (monthlyCounts[monthYear] || 0) + 1;
+    }
+  });
+
+  // Sort months chronologically
+  const sortedMonths = Object.keys(monthlyCounts).sort((a, b) => new Date(a) - new Date(b));
+  const monthlyLabels = sortedMonths;
+  const monthlyData = sortedMonths.map(month => monthlyCounts[month]);
+
+  const monthlyCtx = document.getElementById('monthlyChart').getContext('2d');
+  new Chart(monthlyCtx, {
+    type: 'line',
+    data: {
+      labels: monthlyLabels,
+      datasets: [{
+        label: 'Complaints Submitted',
+        data: monthlyData,
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        borderColor: 'rgba(75, 192, 192, 1)',
+        borderWidth: 2,
+        fill: true,
+        tension: 0.4
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: {
+          beginAtZero: true,
+          precision: 0
+        }
+      },
+      plugins: {
+        legend: {
+          display: false
+        }
+      }
+    }
+  });
+</script>
+
+<!-- Search functionality script -->
+<script>
+  // Search functionality
+  const searchInput = document.getElementById('searchInput');
+  const categoryFilter = document.getElementById('categoryFilter');
+  const locationFilter = document.getElementById('locationFilter');
+  const searchBtn = document.getElementById('searchBtn');
+  const clearBtn = document.getElementById('clearBtn');
+  const searchResultsInfo = document.getElementById('searchResultsInfo');
+  const complaintsTable = document.getElementById('complaintsTable');
+
+  // Store original complaints data
+  const originalComplaints = <%- JSON.stringify(complaints||[]) %>;
+
+  // Search function
+  async function performSearch() {
+    const searchTerm = searchInput.value.trim();
+    const category = categoryFilter.value;
+    const location = locationFilter.value.trim();
+
+    // Build query parameters
+    const params = new URLSearchParams();
+    if (searchTerm) params.append('q', searchTerm);
+    if (category) params.append('category', category);
+    if (location) params.append('location', location);
+
+    try {
+      const response = await fetch('/api/search-complaints?' + params.toString());
+      const searchResults = await response.json();
+
+      // Update table with search results
+      updateComplaintsTable(searchResults);
+
+      // Update search results info
+      if (searchTerm || category || location) {
+        searchResultsInfo.textContent = 'Found ' + searchResults.length + ' complaint(s) matching your search criteria';
+        searchResultsInfo.style.display = 'block';
+      } else {
+        searchResultsInfo.style.display = 'none';
+      }
+    } catch (error) {
+      console.error('Search error:', error);
+      searchResultsInfo.textContent = 'Error performing search. Please try again.';
+      searchResultsInfo.style.display = 'block';
+    }
+  }
+
+  // Update complaints table
+  function updateComplaintsTable(complaints) {
+    const tbody = complaintsTable.querySelector('tbody');
+
+    if (complaints.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="12" style="text-align: center; padding: 20px;">No complaints found matching your search criteria</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = complaints.map(c => {
+      const submittedDate = c.submitted_date ? new Date(c.submitted_date).toLocaleDateString() : 'N/A';
+      const resolvedDate = c.resolved_date ? new Date(c.resolved_date).toLocaleDateString() : '-';
+      const imageCell = c.image_path ?
+        '<img src="/uploads/' + c.image_path + '" alt="Complaint Image" style="max-width: 100px; max-height: 100px; object-fit: cover;">' :
+        'No Image';
+      return '<tr>' +
+        '<td>' + c.id + '</td>' +
+        '<td>' + c.title + '</td>' +
+        '<td>' + c.category + '</td>' +
+        '<td>' + c.description + '</td>' +
+        '<td>' + imageCell + '</td>' +
+        '<td>' + c.location + '</td>' +
+        '<td>' + (c.status || 'Pending') + '</td>' +
+        '<td>' + (c.votes || 0) + '</td>' +
+        '<td>' + (c.username || 'Anonymous') + '</td>' +
+        '<td>' + submittedDate + '</td>' +
+        '<td>' + resolvedDate + '</td>' +
+        '<td>' +
+          '<form action="/vote/' + c.id + '" method="POST" style="display: inline;">' +
+            '<button type="submit" class="btn">Vote</button>' +
+          '</form>' +
+        '</td>' +
+      '</tr>';
+    }).join('');
+  }
+
+  // Clear search function
+  function clearSearch() {
+    searchInput.value = '';
+    categoryFilter.value = '';
+    locationFilter.value = '';
+    updateComplaintsTable(originalComplaints);
+    searchResultsInfo.style.display = 'none';
+  }
+
+  // Event listeners
+  searchBtn.addEventListener('click', performSearch);
+  clearBtn.addEventListener('click', clearSearch);
+
+  // Search on Enter key
+  searchInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      performSearch();
+    }
+  });
+
+  locationFilter.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      performSearch();
+    }
+  });
+
+  // Auto-scroll to existing complaint if message is shown
+  <% if (typeof message !== 'undefined' && message === 'complaint_exists' && typeof existingId !== 'undefined') { %>
+    document.addEventListener('DOMContentLoaded', function() {
+      const targetElement = document.getElementById('complaint-<%- existingId %>');
+      if (targetElement) {
+        targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        targetElement.style.backgroundColor = '#fff3cd';
+      }
+    });
+  <% } %>
+</script>
+
+    <p><a href="/">← Back to Home</a></p>
+  </div>
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 Civic Connect | Designed for Civic Engagement</p>
+  </footer>
+</body>
+</html>

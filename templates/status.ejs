@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Complaint Status</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+     <!-- Header -->
+  <header>
+    <div class="header">
+      <img src="/static/logo.png" alt="Logo" class="logo">
+      <h1 class="site-title">Civic Connect</h1>
+    </div>
+    <nav class="navbar">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <% if (typeof userId !== 'undefined' && userId) { %>
+          <!-- Logged in user navigation -->
+          <li><a href="/submit">Submit Complaint</a></li>
+          <li><a href="/existing">Vote for Complaint</a></li>
+          <li><a href="/dashboard">My Dashboard</a></li>
+          <li><a href="/about">About Us</a></li>
+          <li><a href="/logout">Logout</a></li>
+          <li><span>Welcome, <%= username %>!</span></li>
+        <% } else { %>
+          <!-- Not logged in navigation -->
+          <li><a href="/login">User Login</a></li>
+          <li><a href="/register">User Register</a></li>
+          <li><a href="/admin/login">Admin Login</a></li>
+        <% } %>
+      </ul>
+    </nav>
+  </header>
+  <h2>Your Complaints</h2>
+  <table border="1"cellpadding="10"
+   cellspacing="0"style="width: 100%;
+   text-align:center;"  >
+    <tr>
+      <th>id</th>
+      <th>category</th>
+      <th> description</th>
+      <th>location</th>
+      <th>status</th>
+      <th>votes</th>
+      <th>Date Submitted</th>
+      <th>Date Resolved</th>
+      <th>Action</th>
+    </tr>
+    <% complaints.forEach(c => { %>
+      <tr>
+        <td><%= c.id %></td>
+        <td><%= c.category %></td>
+        <td><%= c.description %></td>
+         <td><%= c.location %></td>
+         <td><%= c.status || 'Pending' %></td>
+          <td><%= c.votes %></td>
+          <td><%= c.submitted_date ? new Date(c.submitted_date).toLocaleDateString() : 'N/A' %></td>
+          <td><%= c.resolved_date ? new Date(c.resolved_date).toLocaleDateString() : '-' %></td>
+          <td>
+      <!-- <form action="/vote/<%=c.id %>"method="Post">
+        <button type="submit">vote</button>
+      </form> -->
+
+  <form action="/update-status/<%= c.id %>" method="POST" style="display:inline;">
+    <input type="hidden" name="status" value="Resolved">
+    <button type="submit">Mark Resolved</button>
+  </form>
+
+  <form action="/update-status/<%= c.id %>" method="POST" style="display:inline;">
+    <input type="hidden" name="status" value="Pending">
+    <button type="submit">Mark Pending</button>
+  </form>
+</td>
+    </td>
+    </tr>
+     <% }) %>
+  </table>
+   <!-- Footer -->
+  <footer>
+    <p>© 2025 Civic Connect | Designed for Civic Engagement</p>
+  </footer>
+</body>
+</html>

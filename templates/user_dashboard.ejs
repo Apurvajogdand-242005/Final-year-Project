@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Dashboard - Civic Connect</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="header">
+      <img src="/static/logo.png" alt="Logo" class="logo">
+      <h1 class="site-title">Civic Connect</h1>
+    </div>
+    <nav class="navbar">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/submit">Submit Complaint</a></li>
+        <li><a href="/existing">Vote for Complaint</a></li>
+        <li><a href="/dashboard">My Dashboard</a></li>
+        <li><a href="/status">Check Status</a></li>
+        <li><a href="/about">About Us</a></li>
+        <li><a href="/logout">Logout</a></li>
+        <li><span style="color: white;">Welcome, <%= username %>!</span></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="container">
+    <div class="welcome-section">
+      <h1>Welcome back, <%= username %>!</h1>
+      <p>Here you can view and manage your submitted complaints.</p>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="stats-container">
+      <div class="stat-box">
+        <h3>Total Complaints</h3>
+        <p class="stat-number"><%= complaints.length %></p>
+      </div>
+      <div class="stat-box">
+        <h3>Pending</h3>
+        <p class="stat-number"><%= complaints.filter(c => !c.status || c.status === 'Pending').length %></p>
+      </div>
+      <div class="stat-box">
+        <h3>In Progress</h3>
+        <p class="stat-number"><%= complaints.filter(c => c.status === 'In Progress').length %></p>
+      </div>
+      <div class="stat-box">
+        <h3>Resolved</h3>
+        <p class="stat-number"><%= complaints.filter(c => c.status === 'Resolved').length %></p>
+      </div>
+    </div>
+
+    <!-- Complaints Table -->
+    <h2>My Complaints</h2>
+    <% if (complaints && complaints.length > 0) { %>
+      <table class="table-box">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Description</th>
+            <th>Location</th>
+            <th>Status</th>
+            <th>Votes</th>
+            <th>Date Submitted</th>
+            <th>Date Resolved</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% complaints.forEach(c => { %>
+            <tr>
+              <td><%= c.id %></td>
+              <td><%= c.title %></td>
+              <td><%= c.category %></td>
+              <td><%= c.description %></td>
+              <td><%= c.location %></td>
+              <td>
+                <span class="status-badge <%= c.status ? c.status.toLowerCase().replace(' ', '-') : 'pending' %>">
+                  <%= c.status || 'Pending' %>
+                </span>
+              </td>
+              <td><%= c.votes %></td>
+              <td><%= c.submitted_date ? new Date(c.submitted_date).toLocaleDateString() : 'N/A' %></td>
+              <td><%= c.resolved_date ? new Date(c.resolved_date).toLocaleDateString() : '-' %></td>
+              <td>
+                <a href="/existing" class="btn">View All</a>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    <% } else { %>
+      <div class="no-complaints">
+        <h3>No complaints submitted yet</h3>
+        <p>You haven't submitted any complaints yet. <a href="/submit">Submit your first complaint</a> to get started!</p>
+      </div>
+    <% } %>
+
+    <!-- Feedback Section -->
+    <div class="feedback-section">
+      <h2>Share Your Feedback</h2>
+      <p>Your feedback helps us improve our services. Please rate your overall experience with Civic Connect.</p>
+
+      <form id="feedbackForm" class="feedback-form">
+        <div class="form-group">
+          <label for="rating">Rating (1-5 stars):</label>
+          <div class="rating-stars">
+            <input type="radio" id="star5" name="rating" value="5" required>
+            <label for="star5">★</label>
+            <input type="radio" id="star4" name="rating" value="4">
+            <label for="star4">★</label>
+            <input type="radio" id="star3" name="rating" value="3">
+            <label for="star3">★</label>
+            <input type="radio" id="star2" name="rating" value="2">
+            <label for="star2">★</label>
+            <input type="radio" id="star1" name="rating" value="1">
+            <label for="star1">★</label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="experience">Tell us about your experience (optional):</label>
+          <textarea id="experience" name="experience" rows="4" placeholder="Share your thoughts, suggestions, or any issues you encountered..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="complaint_id">Related to a specific complaint? (optional):</label>
+          <select id="complaint_id" name="complaint_id">
+            <option value="">General feedback</option>
+            <% complaints.forEach(c => { %>
+              <option value="<%= c.id %>"><%= c.title %> (ID: <%= c.id %>)</option>
+            <% }) %>
+          </select>
+        </div>
+
+        <button type="submit" class="btn primary">Submit Feedback</button>
+      </form>
+
+      <div id="feedbackMessage" class="feedback-message" style="display: none;"></div>
+    </div>
+
+    <!-- Recent Feedback -->
+    <% if (feedback && feedback.length > 0) { %>
+      <div class="recent-feedback">
+        <h2>Your Recent Feedback</h2>
+        <div class="feedback-list">
+          <% feedback.forEach(f => { %>
+            <div class="feedback-item">
+              <div class="feedback-header">
+                <span class="rating">Rating: <%= '★'.repeat(f.rating) %></span>
+                <span class="date"><%= new Date(f.date_submitted).toLocaleDateString() %></span>
+              </div>
+              <% if (f.experience) { %>
+                <p class="experience"><%= f.experience %></p>
+              <% } %>
+              <% if (f.complaint_id) { %>
+                <p class="complaint-ref">Related to complaint ID: <%= f.complaint_id %></p>
+              <% } %>
+            </div>
+          <% }) %>
+        </div>
+      </div>
+    <% } %>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+      <h3>Quick Actions</h3>
+      <div class="action-buttons">
+        <a href="/submit" class="btn primary">Submit New Complaint</a>
+        <a href="/existing" class="btn secondary">Vote on Complaints</a>
+        <a href="/status" class="btn secondary">View All Status</a>
+      </div>
+    </div>
+
+    <p><a href="/">← Back to Home</a></p>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 Civic Connect | Designed for Civic Engagement</p>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const feedbackForm = document.getElementById('feedbackForm');
+      const feedbackMessage = document.getElementById('feedbackMessage');
+
+      feedbackForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const formData = new FormData(feedbackForm);
+        const rating = formData.get('rating');
+        const experience = formData.get('experience');
+        const complaint_id = formData.get('complaint_id');
+
+        if (!rating) {
+          showMessage('Please select a rating.', 'error');
+          return;
+        }
+
+        try {
+          const response = await fetch('/feedback', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              rating: parseInt(rating),
+              experience: experience,
+              complaint_id: complaint_id || null
+            })
+          });
+
+          const result = await response.json();
+
+          if (result.success) {
+            showMessage(result.message, 'success');
+            feedbackForm.reset();
+            // Optionally reload the page to show new feedback
+            setTimeout(() => {
+              window.location.reload();
+            }, 1500);
+          } else {
+            showMessage(result.message || 'Failed to submit feedback.', 'error');
+          }
+        } catch (error) {
+          console.error('Error submitting feedback:', error);
+          showMessage('An error occurred. Please try again.', 'error');
+        }
+      });
+
+      function showMessage(message, type) {
+        feedbackMessage.textContent = message;
+        feedbackMessage.className = `feedback-message ${type}`;
+        feedbackMessage.style.display = 'block';
+        setTimeout(() => {
+          feedbackMessage.style.display = 'none';
+        }, 5000);
+      }
+    });
+  </script>
+
+  <style>
+    .welcome-section {
+      background: linear-gradient(135deg, #007bff, #0056b3);
+      color: white;
+      padding: 30px;
+      border-radius: 10px;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    .welcome-section h1 {
+      margin: 0 0 10px 0;
+      font-size: 2.5em;
+    }
+
+    .welcome-section p {
+      margin: 0;
+      font-size: 1.2em;
+      opacity: 0.9;
+    }
+
+    .stats-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin: 30px 0;
+    }
+
+    .stat-box {
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+      border: 1px solid #e9ecef;
+    }
+
+    .stat-number {
+      font-size: 2em;
+      font-weight: bold;
+      color: #007bff;
+      margin: 10px 0 0 0;
+    }
+
+    .status-badge {
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.8em;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .status-badge.pending {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    .status-badge.in-progress {
+      background: #cce7ff;
+      color: #0066cc;
+    }
+
+    .status-badge.resolved {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .no-complaints {
+      text-align: center;
+      padding: 40px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+
+    .no-complaints h3 {
+      color: #6c757d;
+      margin-bottom: 10px;
+    }
+
+    .feedback-section {
+      background: #f8f9fa;
+      padding: 25px;
+      border-radius: 10px;
+      margin: 30px 0;
+      border: 1px solid #e9ecef;
+    }
+
+    .feedback-section h2 {
+      color: #495057;
+      margin-top: 0;
+    }
+
+    .feedback-form {
+      max-width: 600px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #495057;
+    }
+
+    .rating-stars {
+      display: flex;
+      flex-direction: row-reverse;
+      justify-content: flex-end;
+    }
+
+    .rating-stars input[type="radio"] {
+      display: none;
+    }
+
+    .rating-stars label {
+      font-size: 2em;
+      color: #ddd;
+      cursor: pointer;
+      margin-left: 5px;
+      transition: color 0.2s;
+    }
+
+    .rating-stars input[type="radio"]:checked ~ label,
+    .rating-stars label:hover,
+    .rating-stars label:hover ~ label {
+      color: #ffd700;
+    }
+
+    .rating-stars input[type="radio"]:checked ~ label {
+      color: #ffd700;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ced4da;
+      border-radius: 5px;
+      font-family: inherit;
+      resize: vertical;
+    }
+
+    select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ced4da;
+      border-radius: 5px;
+      font-family: inherit;
+    }
+
+    .feedback-message {
+      margin-top: 15px;
+      padding: 10px;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+
+    .feedback-message.success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .feedback-message.error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    .recent-feedback {
+      margin: 30px 0;
+    }
+
+    .recent-feedback h2 {
+      color: #495057;
+      margin-bottom: 20px;
+    }
+
+    .feedback-list {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .feedback-item {
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid #e9ecef;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .feedback-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 0.9em;
+    }
+
+    .feedback-header .rating {
+      color: #ffd700;
+      font-weight: bold;
+    }
+
+    .feedback-header .date {
+      color: #6c757d;
+    }
+
+    .experience {
+      margin: 0 0 10px 0;
+      color: #495057;
+      line-height: 1.5;
+    }
+
+    .complaint-ref {
+      margin: 0;
+      font-size: 0.85em;
+      color: #6c757d;
+      font-style: italic;
+    }
+
+    .quick-actions {
+      background: #e9ecef;
+      padding: 20px;
+      border-radius: 8px;
+      margin: 30px 0;
+    }
+
+    .quick-actions h3 {
+      margin-top: 0;
+      color: #495057;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      margin-top: 15px;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+      display: inline-block;
+      text-align: center;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn.primary {
+      background: #007bff;
+      color: white;
+    }
+
+    .btn.secondary {
+      background: #6c757d;
+      color: white;
+    }
+
+    .btn:hover {
+      opacity: 0.8;
+    }
+  </style>
+</body>
+</html>

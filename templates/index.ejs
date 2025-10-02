@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Civic Connect - Empowering Citizen Voices</title>
+  <link rel="stylesheet" href="/static/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    .hero-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+    }
+    .hero-content {
+      max-width: 800px;
+      padding: 20px;
+    }
+    .hero-content h2 {
+      font-size: 3em;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+    .hero-content p {
+      font-size: 1.5em;
+      margin-bottom: 30px;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    }
+    .cta-button {
+      background: #dc3545;
+      color: white;
+      padding: 15px 30px;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 1.2em;
+      transition: background 0.3s;
+    }
+    .cta-button:hover {
+      background: #c82333;
+    }
+    .features {
+      padding: 60px 20px;
+      background: #f8f9fa;
+      text-align: center;
+    }
+    .features h2 {
+      font-size: 2.5em;
+      margin-bottom: 40px;
+      color: #333;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .feature-card {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      transition: transform 0.3s;
+    }
+    .feature-card:hover {
+      transform: translateY(-5px);
+    }
+    .feature-icon {
+      font-size: 3em;
+      color: #007bff;
+      margin-bottom: 20px;
+    }
+    .feature-card h3 {
+      font-size: 1.5em;
+      margin-bottom: 15px;
+      color: #333;
+    }
+    .stats {
+      padding: 60px 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      text-align: center;
+    }
+    .stats h2 {
+      font-size: 2.5em;
+      margin-bottom: 40px;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 30px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .stat-item {
+      font-size: 2em;
+      font-weight: bold;
+    }
+    .stat-label {
+      font-size: 1.2em;
+      opacity: 0.9;
+    }
+    .about {
+      padding: 60px 20px;
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .about h2 {
+      font-size: 2.5em;
+      margin-bottom: 30px;
+      color: #333;
+    }
+    .about p {
+      font-size: 1.2em;
+      line-height: 1.6;
+      color: #666;
+    }
+    @media (max-width: 768px) {
+      .hero-content h2 { font-size: 2em; }
+      .hero-content p { font-size: 1.2em; }
+      .features-grid { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header with logo + title -->
+  <header class="header">
+    <div class="logo-nav">
+      <img src="/static/logo.png" alt="Logo" class="logo"/>
+      <h1 class="site-title">Civic Connect</h1>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+      <ul>
+        <% if (typeof userId !== 'undefined' && userId) { %>
+          <!-- Logged in user navigation -->
+          <li><a href="/submit">Submit Complaint</a></li>
+          <li><a href="/existing">Vote for Complaint</a></li>
+          <li><a href="/dashboard">My Dashboard</a></li>
+          <li><a href="/status">Check Status</a></li>
+          <li><a href="/about">About Us</a></li>
+          <li><a href="/logout">Logout</a></li>
+          <li><span>Welcome, <%= username %>!</span></li>
+        <% } else { %>
+          <!-- Not logged in navigation -->
+          <li><a href="/existing">Vote for Complaint</a></li>
+          <li><a href="/about">About Us</a></li>
+          <li><a href="/login">User Login</a></li>
+          <li><a href="/register">User Register</a></li>
+          <li><a href="/admin/login">Admin Login</a></li>
+          <li><a href="/admin/register">Admin Register</a></li>
+        <% } %>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Fullscreen Image Slider with Overlay -->
+  <section class="hero">
+    <div class="slider">
+      <div class="slide fade">
+        <img src="/static/lights.jpg" alt="Street Lights" />
+        <div class="hero-overlay">
+          <div class="hero-content">
+            <h2>Empowering Citizen Voices</h2>
+            <p>Report issues, vote on priorities, and drive change in your community</p>
+            <% if (typeof userId === 'undefined' || !userId) { %>
+              <a href="/register" class="cta-button">Get Started</a>
+            <% } else { %>
+              <a href="/submit" class="cta-button">Submit a Complaint</a>
+            <% } %>
+          </div>
+        </div>
+      </div>
+      <div class="slide fade">
+        <img src="/static/road.jpg" alt="Better Roads" />
+        <div class="hero-overlay">
+          <div class="hero-content">
+            <h2>Together for Better Roads</h2>
+            <p>Join thousands of citizens making their voices heard for safer infrastructure</p>
+            <% if (typeof userId === 'undefined' || !userId) { %>
+              <a href="/register" class="cta-button">Join Now</a>
+            <% } else { %>
+              <a href="/existing" class="cta-button">Vote on Issues</a>
+            <% } %>
+          </div>
+        </div>
+      </div>
+      <div class="slide fade">
+        <img src="/static/water.jpg" alt="Clean Water" />
+        <div class="hero-overlay">
+          <div class="hero-content">
+            <h2>Your Voice, Our Responsibility</h2>
+            <p>Transparent governance through citizen participation and data-driven decisions</p>
+            <% if (typeof userId === 'undefined' || !userId) { %>
+              <a href="/login" class="cta-button">Login to Participate</a>
+            <% } else { %>
+              <a href="/status" class="cta-button">Check Status</a>
+            <% } %>
+          </div>
+        </div>
+      </div>
+
+      <!-- Arrows -->
+      <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+      <a class="next" onclick="plusSlides(1)">&#10095;</a>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features">
+    <h2>How Civic Connect Works</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <i class="fas fa-edit feature-icon"></i>
+        <h3>Submit Complaints</h3>
+        <p>Report local issues like potholes, broken streetlights, or water problems with detailed descriptions and photos.</p>
+      </div>
+      <div class="feature-card">
+        <i class="fas fa-vote-yea feature-icon"></i>
+        <h3>Vote & Prioritize</h3>
+        <p>Support existing complaints by voting. Help prioritize which issues need immediate attention from authorities.</p>
+      </div>
+      <div class="feature-card">
+        <i class="fas fa-chart-line feature-icon"></i>
+        <h3>Track Progress</h3>
+        <p>Monitor the status of your complaints and see how the community is working together to solve problems.</p>
+      </div>
+      <div class="feature-card">
+        <i class="fas fa-users-cog feature-icon"></i>
+        <h3>Admin Analytics</h3>
+        <p>Government officials can analyze trends, generate reports, and make data-driven decisions for better governance.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="stats">
+    <h2>Community Impact</h2>
+    <div class="stats-grid">
+      <div>
+        <div class="stat-item"><%= typeof totalComplaints !== 'undefined' ? totalComplaints : '500+' %></div>
+        <div class="stat-label">Complaints Submitted</div>
+      </div>
+      <div>
+        <div class="stat-item"><%= typeof totalUsers !== 'undefined' ? totalUsers : '1000+' %></div>
+        <div class="stat-label">Active Citizens</div>
+      </div>
+      <div>
+        <div class="stat-item"><%= typeof resolvedComplaints !== 'undefined' ? resolvedComplaints : '300+' %></div>
+        <div class="stat-label">Issues Resolved</div>
+      </div>
+      <div>
+        <div class="stat-item"><%= typeof totalVotes !== 'undefined' ? totalVotes : '2500+' %></div>
+        <div class="stat-label">Community Votes</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="about">
+    <h2>About Civic Connect</h2>
+    <p>Civic Connect is a revolutionary platform that bridges the gap between citizens and government. By providing an easy-to-use interface for reporting local issues, voting on priorities, and tracking progress, we empower communities to actively participate in governance and drive positive change.</p>
+    <p>Our mission is to create transparent, accountable, and responsive local governments through technology and citizen engagement.</p>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Civic Connect | All Rights Reserved</p>
+    <p>Designed for Citizen Engagement | Contact: support@civicconnect.gov</p>
+  </footer>
+
+  <script src="/static/script.js"></script>
+</body>
+</html>

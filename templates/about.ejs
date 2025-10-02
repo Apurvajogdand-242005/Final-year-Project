@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>About Us - Civic Connect</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+   <!-- Header -->
+  <header>
+    <div class="header">
+      <img src="/static/logo.png" alt="Logo" class="logo">
+      <h1 class="site-title">Civic Connect</h1>
+    </div>
+    <nav class="navbar">
+      <ul>
+        <% if (typeof userId !== 'undefined' && userId) { %>
+          <!-- Logged in user navigation -->
+          <li><a href="/">Home</a></li>
+          <li><a href="/submit">Submit Complaint</a></li>
+          <li><a href="/existing">Vote for Complaint</a></li>
+          <li><a href="/dashboard">My Dashboard</a></li>
+          <li><a href="/status">Check Status</a></li>
+          <li><a href="/about">About Us</a></li>
+          <li><a href="/logout">Logout</a></li>
+          <li><span>Welcome, <%= username %>!</span></li>
+        <% } else { %>
+          <!-- Not logged in navigation -->
+          <li><a href="/">Home</a></li>
+          <li><a href="/existing">Vote for Complaint</a></li>
+          <li><a href="/login">User Login</a></li>
+          <li><a href="/register">User Register</a></li>
+          <li><a href="/admin/login">Admin Login</a></li>
+          <li><a href="/admin/register">Admin Register</a></li>
+          <li><a href="/about">About Us</a></li>
+        <% } %>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h1>About Civic Connect</h1>
+
+    <div style="margin: 20px 0; padding: 20px; background: #f9f9f9; border-radius: 10px; border-left: 5px solid #004080;">
+      <h2>What is Civic Connect?</h2>
+      <p>Civic Connect is a revolutionary platform that bridges the gap between citizens and local government authorities. Our mission is to empower communities by providing an easy-to-use system for reporting civic issues, tracking their resolution, and fostering collaborative problem-solving.</p>
+    </div>
+
+    <div style="margin: 20px 0; padding: 20px; background: #f9f9f9; border-radius: 10px; border-left: 5px solid #004080;">
+      <h2>Our Mission</h2>
+      <p>To create transparent, efficient, and responsive civic engagement by connecting citizens directly with the authorities responsible for maintaining and improving our communities. We believe that every voice matters and that collective action can drive meaningful change.</p>
+    </div>
+    <div style="margin: 20px 0; padding: 20px; background: #f9f9f9; border-radius: 10px; border-left: 5px solid #004080;">
+      <h2>Achievements & Impact</h2>
+      <p> Winner of 3rd Prize at  Avishkar  Research Project Competition 2025.  Recognized for  Building an  Innovative  Application Addressing  Real  Civic  Issues . Commended  for  Research  Excellence , Teamwork , and  Pratical  Problem-solving  Skills</p>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 20px;">
+        <div style="position: relative; border-radius: 10px; overflow: hidden; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);">
+          <img src="/static/photo1.jpg" alt="Achievement Photo 1" style="width: 100%; height: 300px; object-fit: cover;">
+          <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0, 0, 0, 0.8)); color: white; padding: 20px; text-align: center;">
+            
+            <p>Teamwork Excellence</p>
+          </div>
+        </div>
+        <div style="position: relative; border-radius: 10px; overflow: hidden; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);">
+          <img src="/static/photo2.jpg" alt="Achievement Photo 2" style="width: 100%; height: 300px; object-fit: cover;">
+          <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0, 0, 0, 0.8)); color: white; padding: 20px; text-align: center;">
+            
+            <p>3rd Prize Winner</p>
+          </div>
+        </div>
+        <div style="position: relative; border-radius: 10px; overflow: hidden; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);">
+          <img src="/static/photo4.jpg" alt="Achievement Photo 3" style="width: 100%; height: 300px; object-fit: cover;">
+          <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0, 0, 0, 0.8)); color: white; padding: 20px; text-align: center;">
+            
+            <p>Research Excellence</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin: 20px 0; padding: 20px; background: #f9f9f9; border-radius: 10px; border-left: 5px solid #004080;">
+      <h2>Key Features</h2>
+      <ul style="line-height: 1.8;">
+        <li><strong>Easy Complaint Submission:</strong> Report issues like road problems, street lighting, water supply, garbage collection, and more with just a few clicks.</li>
+        <li><strong>Community Voting:</strong> Support existing complaints to highlight the most pressing community concerns.</li>
+        <li><strong>Real-time Status Tracking:</strong> Monitor the progress of your complaints from submission to resolution.</li>
+        <li><strong>Admin Dashboard:</strong> Government officials can efficiently manage and respond to community issues.</li>
+        <li><strong>Analytics & Reports:</strong> Generate comprehensive reports for better decision-making and resource allocation.</li>
+        <li><strong>Email Notifications:</strong> Stay informed about complaint status updates and important announcements.</li>
+      </ul>
+    </div>
+
+    <div style="margin: 20px 0; padding: 20px; background: #f9f9f9; border-radius: 10px; border-left: 5px solid #004080;">
+      <h2>How It Works</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 15px;">
+        <div style="text-align: center;">
+          <div style="font-size: 2em; color: #004080; margin-bottom: 10px;">📝</div>
+          <h4>Report Issues</h4>
+          <p>Citizens can easily submit complaints about civic problems through our user-friendly interface.</p>
+        </div>
+        <div style="text-align: center;">
+          <div style="font-size: 2em; color: #004080; margin-bottom: 10px;">🗳️</div>
+          <h4>Community Voting</h4>
+          <p>Other community members can vote on complaints to prioritize the most important issues.</p>
+        </div>
+        <div style="text-align: center;">
+          <div style="font-size: 2em; color: #004080; margin-bottom: 10px;">👥</div>
+          <h4>Government Response</h4>
+          <p>Local authorities review and address complaints, updating status for transparency.</p>
+        </div>
+        <div style="text-align: center;">
+          <div style="font-size: 2em; color: #004080; margin-bottom: 10px;">📊</div>
+          <h4>Track Progress</h4>
+          <p>Citizens can monitor complaint resolution and view comprehensive analytics.</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin: 20px 0; padding: 20px; background: #f9f9f9; border-radius: 10px; border-left: 5px solid #004080;">
+      <h2>Impact & Statistics</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 15px;">
+        <div style="text-align: center; padding: 15px; background: white; border-radius: 8px;">
+          <div style="font-size: 2em; font-weight: bold; color: #007bff;">500+</div>
+          <p style="margin: 5px 0 0 0; color: #666;">Complaints Resolved</p>
+        </div>
+        <div style="text-align: center; padding: 15px; background: white; border-radius: 8px;">
+          <div style="font-size: 2em; font-weight: bold; color: #28a745;">10,000+</div>
+          <p style="margin: 5px 0 0 0; color: #666;">Community Votes</p>
+        </div>
+        <div style="text-align: center; padding: 15px; background: white; border-radius: 8px;">
+          <div style="font-size: 2em; font-weight: bold; color: #ffc107;">50+</div>
+          <p style="margin: 5px 0 0 0; color: #666;">Cities Served</p>
+        </div>
+        <div style="text-align: center; padding: 15px; background: white; border-radius: 8px;">
+          <div style="font-size: 2em; font-weight: bold; color: #dc3545;">98%</div>
+          <p style="margin: 5px 0 0 0; color: #666;">Satisfaction Rate</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin: 20px 0; padding: 20px; background: #f9f9f9; border-radius: 10px; border-left: 5px solid #004080;">
+      <h2>Real Civic Issues in Action</h2>
+      <p style="margin-bottom: 20px;">See the real issues our community is addressing through Civic Connect. These photos represent the types of civic problems users report and resolve daily.</p>
+
+      <!-- Photo Carousel -->
+      <div class="carousel-container">
+        <div class="carousel">
+          <div class="carousel-slide active">
+            <img src="/static/newphoto1.jpg" alt="Community Issue 1">
+            <div class="carousel-caption">
+              <h4>Garbage Collection</h4>
+              <p>Reporting overflowing bins and missed collection schedules.</p>
+            </div>
+          </div>
+          <div class="carousel-slide">
+            <img src="/static/newphoto2.jpg" alt="Community Issue 2">
+            <div class="carousel-caption">
+              <h4>Public Safety</h4>
+              <p>Addressing safety concerns and emergency response needs.</p>
+            </div>
+          </div>
+          <div class="carousel-slide">
+            <img src="/static/newphoto3.jpg" alt="Community Issue 3">
+            <div class="carousel-caption">
+              <h4>Traffic & Parking</h4>
+              <p>Managing traffic flow and parking violations in our community.</p>
+            </div>
+          </div>
+          <div class="carousel-slide">
+            <img src="/static/newphoto4.jpg" alt="Community Issue 4">
+            <div class="carousel-caption">
+              <h4>Environmental Concerns</h4>
+              <p>Protecting our environment through community action.</p>
+            </div>
+          </div>
+          <div class="carousel-slide">
+            <img src="/static/newphoto5.jpg" alt="Community Issue 5">
+            <div class="carousel-caption">
+              <h4>Public Services</h4>
+              <p>Ensuring reliable access to essential public services.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Navigation Dots -->
+        <div class="carousel-dots">
+          <span class="dot active" data-slide="0"></span>
+          <span class="dot" data-slide="1"></span>
+          <span class="dot" data-slide="2"></span>
+          <span class="dot" data-slide="3"></span>
+          <span class="dot" data-slide="4"></span>
+        </div>
+
+        <!-- Navigation Arrows -->
+        <button class="carousel-arrow prev" id="prevBtn">&#10094;</button>
+        <button class="carousel-arrow next" id="nextBtn">&#10095;</button>
+      </div>
+    </div>
+
+    <div style="margin: 20px 0; padding: 20px; background: #f9f9f9; border-radius: 10px; border-left: 5px solid #004080;">
+      <h2>Our Team</h2>
+      <p>Civic Connect was developed by a passionate team of civic technology enthusiasts dedicated to improving community engagement and government transparency. We combine expertise in software development, user experience design, and civic innovation to create tools that make a real difference in people's lives.</p>
+
+      <div style="margin-top: 20px;">
+        <h3>Core Values</h3>
+        <ul style="line-height: 1.8;">
+          <li><strong>Transparency:</strong> Open communication between citizens and government</li>
+          <li><strong>Efficiency:</strong> Streamlined processes for faster issue resolution</li>
+          <li><strong>Inclusivity:</strong> Accessible to all community members regardless of technical expertise</li>
+          <li><strong>Innovation:</strong> Leveraging technology to solve real-world civic challenges</li>
+          <li><strong>Collaboration:</strong> Building partnerships between citizens, government, and technology</li>
+        </ul>
+      </div>
+
+      <p style="margin-top: 20px;"><strong>Contact Us:</strong> support@civicconnect.gov | Designed for Citizen Engagement</p>
+    </div>
+
+    <p style="text-align: center; margin-top: 30px; font-style: italic; color: #666;">
+      "Together, we can build better communities. Your voice matters."
+    </p>
+  </div>
+
+   <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Civic Connect | All Rights Reserved</p>
+    <p>Designed for Citizen Engagement | Contact: support@civicconnect.gov</p>
+  </footer>
+
+  <style>
+    .carousel-container {
+      position: relative;
+      max-width: 600px;
+      margin: 0 auto;
+      overflow: hidden;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .carousel {
+      position: relative;
+      height: 400px;
+    }
+
+    .carousel-slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      transition: opacity 0.6s ease-in-out;
+    }
+
+    .carousel-slide.active {
+      opacity: 1;
+    }
+
+    .carousel-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .carousel-caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .carousel-caption h4 {
+      margin: 0 0 8px 0;
+      font-size: 1.4em;
+      font-weight: bold;
+    }
+
+    .carousel-caption p {
+      margin: 0;
+      font-size: 1em;
+      opacity: 0.9;
+    }
+
+    .carousel-dots {
+      position: absolute;
+      bottom: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.5);
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .dot.active {
+      background: white;
+    }
+
+    .carousel-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 18px;
+      transition: all 0.3s ease;
+      z-index: 10;
+    }
+
+    .carousel-arrow:hover {
+      background: rgba(0, 0, 0, 0.8);
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    .carousel-arrow.prev {
+      left: 15px;
+    }
+
+    .carousel-arrow.next {
+      right: 15px;
+    }
+
+    @media (max-width: 768px) {
+      .carousel-container {
+        max-width: 100%;
+      }
+
+      .carousel {
+        height: 300px;
+      }
+
+      .carousel-caption {
+        padding: 15px;
+      }
+
+      .carousel-caption h4 {
+        font-size: 1.2em;
+      }
+
+      .carousel-caption p {
+        font-size: 0.9em;
+      }
+
+      .carousel-arrow {
+        width: 35px;
+        height: 35px;
+        font-size: 16px;
+      }
+    }
+  </style>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const slides = document.querySelectorAll('.carousel-slide');
+      const dots = document.querySelectorAll('.dot');
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      let currentSlide = 0;
+      let slideInterval;
+
+      function showSlide(index) {
+        // Hide all slides
+        slides.forEach(slide => slide.classList.remove('active'));
+        dots.forEach(dot => dot.classList.remove('active'));
+
+        // Show current slide
+        slides[index].classList.add('active');
+        dots[index].classList.add('active');
+
+        currentSlide = index;
+      }
+
+      function nextSlide() {
+        currentSlide = (currentSlide + 1) % slides.length;
+        showSlide(currentSlide);
+      }
+
+      function prevSlide() {
+        currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+        showSlide(currentSlide);
+      }
+
+      // Event listeners
+      nextBtn.addEventListener('click', nextSlide);
+      prevBtn.addEventListener('click', prevSlide);
+
+      dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => showSlide(index));
+      });
+
+      // Auto slide
+      function startAutoSlide() {
+        slideInterval = setInterval(nextSlide, 4000); // Change slide every 4 seconds
+      }
+
+      function stopAutoSlide() {
+        clearInterval(slideInterval);
+      }
+
+      // Pause auto slide on hover
+      const carouselContainer = document.querySelector('.carousel-container');
+      carouselContainer.addEventListener('mouseenter', stopAutoSlide);
+      carouselContainer.addEventListener('mouseleave', startAutoSlide);
+
+      // Start auto sliding
+      startAutoSlide();
+    });
+  </script>
+</body>
+</html>

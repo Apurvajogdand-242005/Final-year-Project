@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Registration - Civic Connect</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="header">
+      <img src="/static/logo.png" alt="Logo" class="logo">
+      <h1 class="site-title">Civic Connect</h1>
+    </div>
+    <nav class="navbar">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/admin/login">Admin Login</a></li>
+        <li><a href="/admin/register">Admin Register</a></li>
+        <li><span>Admin Registration</span></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="container">
+    <div class="auth-container">
+      <div class="auth-card">
+        <h2>Admin Registration</h2>
+        <p>Create a new admin account to manage the Civic Connect platform</p>
+
+        <% if (typeof error !== 'undefined') { %>
+          <div class="error-message">
+            <%= error %>
+          </div>
+        <% } %>
+
+        <form action="/admin/register" method="POST" class="auth-form">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" required
+                   placeholder="Enter your username" minlength="3" maxlength="50">
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" required
+                   placeholder="Enter your email address">
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required
+                   placeholder="Enter your password" minlength="6">
+          </div>
+
+          <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" required
+                   placeholder="Confirm your password" minlength="6">
+          </div>
+
+          <div class="form-group">
+            <label for="adminCode">Admin Registration Code</label>
+            <input type="password" id="adminCode" name="adminCode" required
+                   placeholder="Enter admin registration code">
+            <small class="form-help">Contact system administrator for the registration code</small>
+          </div>
+
+          <button type="submit" class="btn primary full-width">Create Admin Account</button>
+        </form>
+
+        <div class="auth-links">
+          <p>Already have an admin account? <a href="/admin/login">Login here</a></p>
+          <p><a href="/">← Back to Home</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 Civic Connect | Designed for Civic Engagement</p>
+  </footer>
+
+  <style>
+    .auth-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 70vh;
+      padding: 20px;
+    }
+
+    .auth-card {
+      background: white;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .auth-card h2 {
+      text-align: center;
+      margin-bottom: 10px;
+      color: #495057;
+    }
+
+    .auth-card p {
+      text-align: center;
+      color: #6c757d;
+      margin-bottom: 30px;
+    }
+
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group label {
+      font-weight: 600;
+      margin-bottom: 5px;
+      color: #495057;
+    }
+
+    .form-group input {
+      padding: 12px;
+      border: 2px solid #e9ecef;
+      border-radius: 5px;
+      font-size: 1em;
+      transition: border-color 0.3s ease;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #007bff;
+    }
+
+    .form-help {
+      color: #6c757d;
+      font-size: 0.85em;
+      margin-top: 5px;
+    }
+
+    .error-message {
+      background: #f8d7da;
+      color: #721c24;
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+      border: 1px solid #f5c6cb;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+      display: inline-block;
+      text-align: center;
+      border: none;
+      cursor: pointer;
+      font-size: 1em;
+      transition: all 0.3s ease;
+    }
+
+    .btn.primary {
+      background: #007bff;
+      color: white;
+    }
+
+    .btn.primary:hover {
+      background: #0056b3;
+      transform: translateY(-1px);
+    }
+
+    .full-width {
+      width: 100%;
+    }
+
+    .auth-links {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .auth-links p {
+      margin: 10px 0;
+    }
+
+    .auth-links a {
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    .auth-links a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      .auth-container {
+        padding: 10px;
+      }
+
+      .auth-card {
+        padding: 30px 20px;
+      }
+    }
+  </style>
+</body>
+</html>

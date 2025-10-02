@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User Login - Civic Connect</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="header">
+      <img src="/static/logo.png" alt="Logo" class="logo">
+      <h1 class="site-title">Civic Connect</h1>
+    </div>
+    <nav class="navbar">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/submit">Submit Complaint</a></li>
+        <li><a href="/existing">Vote for Complaint</a></li>
+        <li><a href="/status">Check Status</a></li>
+        <li><a href="/login">User Login</a></li>
+        <li><a href="/register">User Register</a></li>
+        <li><a href="/admin/login">Admin Login</a></li>
+      </ul>
+    </nav>
+  </header>
+  <div class="login-container">
+    <div class="login-image">
+      <img src="/static/loginimage.jpg" alt="Civic Connect Login" class="login-bg-image">
+    </div>
+    <div class="login-form-section">
+      <div class="form-container">
+        <h1>User Login</h1>
+        <form action="/login" method="POST" class="form-box">
+          <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" placeholder="Enter your username" required>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+          </div>
+
+          <button type="submit" class="btn primary">Login</button>
+        </form>
+        <p class="login-links">Don’t have an account? <a href="/register">Register here</a></p>
+        <p class="back-link"><a href="/">← Back to Home</a></p>
+      </div>
+    </div>
+  </div>
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 Civic Connect | Designed for Civic Engagement</p>
+  </footer>
+
+  <style>
+    .login-container {
+      display: flex;
+      min-height: 100vh;
+      background-color: #f8f9fa;
+    }
+
+    .login-image {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #007bff, #0056b3);
+      position: relative;
+    }
+
+    .login-bg-image {
+      max-width: 100%;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .login-form-section {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background-color: white;
+    }
+
+    .form-container {
+      max-width: 400px;
+      width: 100%;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      background: white;
+    }
+
+    .form-container h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #333;
+      font-size: 2em;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #555;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #007bff;
+      box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+    }
+
+    .btn.primary {
+      width: 100%;
+      padding: 12px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .btn.primary:hover {
+      background: #0056b3;
+    }
+
+    .login-links {
+      text-align: center;
+      margin-top: 20px;
+      color: #666;
+    }
+
+    .login-links a {
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    .login-links a:hover {
+      text-decoration: underline;
+    }
+
+    .back-link {
+      text-align: center;
+      margin-top: 20px;
+      color: #666;
+    }
+
+    .back-link a {
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    .back-link a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      .login-container {
+        flex-direction: column;
+      }
+
+      .login-image {
+        min-height: 40vh;
+        padding: 20px;
+      }
+
+      .login-form-section {
+        padding: 20px;
+      }
+
+      .form-container {
+        padding: 20px;
+        margin: 20px;
+      }
+    }
+  </style>
+</body>
+</html>
+
+

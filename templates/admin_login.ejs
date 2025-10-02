@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Login - Civic Connect</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="header">
+      <img src="/static/logo.png" alt="Logo" class="logo">
+      <h1 class="site-title">Civic Connect</h1>
+    </div>
+    <nav class="navbar">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/submit">Submit Complaint</a></li>
+        <li><a href="/existing">Vote for Complaint</a></li>
+        <li><a href="/status">Check Status</a></li>
+        <li><a href="/login">User Login</a></li>
+        <li><a href="/register">User Register</a></li>
+        <li><a href="/admin/login">Admin Login</a></li>
+        <li><a href="/admin/register">Admin Register</a></li>
+      </ul>
+    </nav>
+  </header>
+  <div class="container">
+    <h1>Admin Login</h1>
+    <form action="/admin/login" method="POST" class="form-box">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" placeholder="Admin username" required>
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" placeholder="Password" required>
+
+      <button type="submit" class="btn">Login</button>
+    </form>
+
+    <div class="auth-links">
+      <p>Don't have an admin account? <a href="/admin/register">Register here</a></p>
+      <p><a href="/">← Back to Home</a></p>
+    </div>
+  </div>
+  
+<!-- Footer -->
+  <footer>
+    <p>© 2025 Civic Connect | Designed for Civic Engagement</p>
+  </footer>
+</body>
+</html>
+

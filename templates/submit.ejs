@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Submit Complaint - Civic Connect</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+   <!-- Header -->
+  <header>
+    <div class="header">
+      <img src="/static/logo.png" alt="Logo" class="logo">
+      <h1 class="site-title">Civic Connect</h1>
+    </div>
+    <nav class="navbar">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/existing">Vote for Complaint</a></li>
+        <li><a href="/dashboard">My Dashboard</a></li>
+        <li><a href="/status">Check Status</a></li>
+        <li><a href="/about">About Us</a></li>
+        <li><a href="/logout">Logout</a></li>
+        <li><span>Welcome, <%= typeof username !== 'undefined' ? username : 'User' %>!</span></li>
+      </ul>
+    </nav>
+  </header>
+
+  
+  <div class="container">
+    <h1>Submit a Complaint</h1>
+    <form action="/submit" method="POST" enctype="multipart/form-data" class="form-box">
+      <label for="title">Complaint Title</label>
+      <input type="text" id="title" name="title" placeholder="Enter complaint title" required>
+
+      <label for="description">Complaint Description</label>
+      <textarea id="description" name="description" placeholder="Describe your issue" required></textarea>
+
+      <label for="location">Location:</label>
+      <input type="text" id="location" name="location" placeholder="enter location" required>
+      <button type="button" id="getLocationBtn" style="margin-left: 10px; padding: 8px 12px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">Get Current Location</button><br>
+
+      <label for="category">Select category</label>
+      <select id="category" name="category" required>
+        <option value="Road Issues">Road Issues</option>
+        <option value="Water Problems">Water Problems</option>
+        <option value="Street Lights">Street Lights</option>
+        <option value="Garbage">Garbage</option>
+        <option value="Noise Pollution">Noise Pollution</option>
+        <option value="Other">Other</option>
+      </select>
+
+      <label for="image">Upload Image (optional)</label>
+      <input type="file" id="image" name="image" accept="image/*">
+
+      <button type="submit" class="btn">Submit Complaint</button>
+    </form>
+    <p><a href="/">← Back to Home</a></p>
+  </div>
+   <!-- Footer -->
+  <footer>
+    <p>© 2025 Civic Connect | Designed for Civic Engagement</p>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const getLocationBtn = document.getElementById('getLocationBtn');
+      const locationInput = document.getElementById('location');
+
+      getLocationBtn.addEventListener('click', function() {
+        if (!navigator.geolocation) {
+          alert('Geolocation is not supported by this browser.');
+          return;
+        }
+
+        // Disable button and show loading state
+        getLocationBtn.disabled = true;
+        getLocationBtn.textContent = 'Getting Location...';
+
+        navigator.geolocation.getCurrentPosition(
+          function(position) {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+
+            // Use Nominatim for reverse geocoding (free, no API key needed)
+            fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&addressdetails=1`)
+              .then(response => response.json())
+              .then(data => {
+                if (data && data.display_name) {
+                  // Extract a readable address
+                  const address = data.display_name;
+                  locationInput.value = address;
+                } else {
+                  alert('Unable to determine address from coordinates.');
+                }
+              })
+              .catch(error => {
+                console.error('Reverse geocoding error:', error);
+                alert('Error getting address. Please enter location manually.');
+              })
+              .finally(() => {
+                // Re-enable button
+                getLocationBtn.disabled = false;
+                getLocationBtn.textContent = 'Get Current Location';
+              });
+          },
+          function(error) {
+            let errorMessage = 'Unable to get your location. ';
+            switch(error.code) {
+              case error.PERMISSION_DENIED:
+                errorMessage += 'Please allow location access and try again.';
+                break;
+              case error.POSITION_UNAVAILABLE:
+                errorMessage += 'Location information is unavailable.';
+                break;
+              case error.TIMEOUT:
+                errorMessage += 'Location request timed out.';
+                break;
+              default:
+                errorMessage += 'An unknown error occurred.';
+                break;
+            }
+            alert(errorMessage);
+
+            // Re-enable button
+            getLocationBtn.disabled = false;
+            getLocationBtn.textContent = 'Get Current Location';
+          },
+          {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 300000 // 5 minutes
+          }
+        );
+      });
+    });
+  </script>
+</body>
+</html>

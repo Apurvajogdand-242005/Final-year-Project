@@ -1,0 +1,355 @@
+<!-- eslint-disable -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Government Report - Civic Connect</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <style>
+    body {
+      font-family: 'Times New Roman', serif;
+      margin: 0;
+      padding: 30px;
+      background-color: #ffffff;
+      color: #000000;
+      line-height: 1.5;
+    }
+
+    .report-header {
+      text-align: center;
+      margin-bottom: 50px;
+      padding: 40px 20px;
+      background: linear-gradient(to right, #138808, #ffffff, #000080);
+      border: 2px solid #138808;
+      color: #ffffff;
+      border-radius: 0;
+    }
+
+    .report-header h1 {
+      margin: 0;
+      font-size: 2.8em;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .report-header .subtitle {
+      font-size: 1.4em;
+      margin: 15px 0 0 0;
+      font-weight: normal;
+    }
+
+    .report-date {
+      text-align: right;
+      font-style: italic;
+      margin-bottom: 30px;
+      color: #666;
+      font-size: 1.1em;
+    }
+
+    .summary-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+      margin-bottom: 50px;
+    }
+
+    .stat-box {
+      background: #f8f9fa;
+      padding: 30px;
+      border: 1px solid #dee2e6;
+      text-align: center;
+      border-left: 4px solid #138808;
+    }
+
+    .stat-box h3 {
+      margin: 0 0 20px 0;
+      color: #495057;
+      font-size: 1.2em;
+      font-weight: normal;
+    }
+
+    .stat-value {
+      font-size: 2.8em;
+      font-weight: bold;
+      color: #138808;
+      margin: 0;
+    }
+
+    .location-section {
+      margin-bottom: 50px;
+      page-break-inside: avoid;
+    }
+
+    .location-title {
+      background: #138808;
+      color: white;
+      padding: 20px;
+      margin: 0 0 25px 0;
+      font-size: 1.6em;
+      border-radius: 0;
+      font-weight: bold;
+    }
+
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 25px;
+      margin-bottom: 40px;
+    }
+
+    .category-box {
+      background: white;
+      border: 1px solid #dee2e6;
+      overflow: hidden;
+      page-break-inside: avoid;
+    }
+
+    .category-header {
+      background: #6b7280;
+      color: white;
+      padding: 18px;
+      font-weight: bold;
+      font-size: 1.2em;
+    }
+
+    .category-content {
+      padding: 25px;
+    }
+
+    .complaint-item {
+      padding: 20px;
+      border-bottom: 1px solid #e9ecef;
+      margin-bottom: 15px;
+    }
+
+    .complaint-item:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+    }
+
+    .complaint-title {
+      font-weight: bold;
+      color: #000;
+      margin-bottom: 8px;
+      font-size: 1.1em;
+    }
+
+    .complaint-meta {
+      font-size: 0.95em;
+      color: #6c757d;
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+
+    .official-message {
+      background: #f8f9fa;
+      color: #000;
+      padding: 40px;
+      border: 1px solid #dee2e6;
+      margin-bottom: 50px;
+      text-align: center;
+      page-break-inside: avoid;
+    }
+
+    .official-message h3 {
+      margin-top: 0;
+      font-size: 1.8em;
+      color: #138808;
+    }
+
+    .official-message p {
+      font-size: 1.1em;
+      line-height: 1.7;
+      margin: 20px 0;
+    }
+
+    .complaint-description {
+      color: #495057;
+      line-height: 1.5;
+      margin-top: 10px;
+    }
+
+    .priority-high {
+      color: #dc3545;
+      font-weight: bold;
+    }
+
+    .priority-medium {
+      color: #856404;
+      font-weight: bold;
+    }
+
+    .priority-low {
+      color: #155724;
+      font-weight: bold;
+    }
+
+    .report-actions {
+      text-align: center;
+      margin-top: 50px;
+      padding: 40px;
+      background: #f8f9fa;
+      border: 1px solid #dee2e6;
+    }
+
+    .btn {
+      padding: 15px 35px;
+      text-decoration: none;
+      border-radius: 0;
+      font-weight: bold;
+      display: inline-block;
+      margin: 0 15px;
+      border: 1px solid #138808;
+      cursor: pointer;
+      font-size: 1.1em;
+      font-family: 'Times New Roman', serif;
+    }
+
+    .btn-primary {
+      background: #138808;
+      color: white;
+    }
+
+    .btn-secondary {
+      background: white;
+      color: #138808;
+    }
+
+    .btn:hover {
+      background: #0d5a0d;
+      color: white;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 50px;
+      padding: 30px;
+      color: #6c757d;
+      font-size: 1em;
+      border-top: 1px solid #dee2e6;
+    }
+
+    @media print {
+      .report-actions,
+      .btn {
+        display: none !important;
+      }
+
+      body {
+        background: white !important;
+        padding: 20px !important;
+      }
+
+      .report-header {
+        background: white !important;
+        border: 2px solid black !important;
+        color: black !important;
+        -webkit-print-color-adjust: exact;
+      }
+
+      .location-section {
+        page-break-after: always;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="report-header">
+    <h1>Civic Connect</h1>
+    <div class="subtitle">Government Report - Civic Issues Summary</div>
+  </div>
+
+  <div class="report-date">
+    Generated on: <%= new Date().toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    }) %>
+  </div>
+
+  <!-- Summary Statistics -->
+  <div class="summary-stats">
+    <div class="stat-box">
+      <h3>Total Complaints</h3>
+      <div class="stat-value"><%= totalComplaints %></div>
+    </div>
+    <div class="stat-box">
+      <h3>Locations Covered</h3>
+      <div class="stat-value"><%= Object.keys(locationStats).length %></div>
+    </div>
+    <div class="stat-box">
+      <h3>Categories</h3>
+      <div class="stat-value"><%= Object.keys(categoryStats).length %></div>
+    </div>
+    <div class="stat-box">
+      <h3>Average Priority</h3>
+      <div class="stat-value"><%= avgPriority %></div>
+    </div>
+  </div>
+
+  <!-- Official Message -->
+  <div class="official-message">
+    <h3>Official Government Report</h3>
+    <p>Dear Government Authorities,</p>
+    <p>This comprehensive report has been prepared by the Civic Connect platform to provide you with detailed insights into civic issues reported by citizens in our community. The data presented here represents genuine concerns that require your immediate attention and action.</p>
+    <p>We kindly request your prompt intervention to address these matters and improve the quality of life for all residents. Your cooperation in resolving these issues will greatly contribute to building a better and more responsive civic infrastructure.</p>
+    <p>Thank you for your continued dedication to public service.</p>
+    <p><strong>Best regards,<br>Civic Connect Administration Team</strong></p>
+  </div>
+
+  <!-- Location-wise Breakdown -->
+  <% Object.keys(locationStats).forEach(location => { %>
+    <div class="location-section">
+      <h2 class="location-title"><%= location %> - <%= locationStats[location].count %> complaints</h2>
+
+      <div class="category-grid">
+        <% Object.keys(locationStats[location].categories).forEach(category => { %>
+          <div class="category-box">
+            <div class="category-header">
+              <%= category %> - <%= locationStats[location].categories[category].count %> complaints
+            </div>
+            <div class="category-content">
+              <% locationStats[location].categories[category].complaints.forEach(complaint => { %>
+                <div class="complaint-item">
+                  <div class="complaint-title"><%= complaint.title %></div>
+                  <div class="complaint-meta">
+                    <strong>ID:</strong> <%= complaint.id %> |
+                    <strong>Submitted by:</strong> <%= complaint.user_name || 'Anonymous' %> |
+                    <strong>Submitted Date:</strong> <%= complaint.formattedSubmittedDate %> |
+                    <% if (complaint.formattedResolvedDate) { %>
+                      <strong>Solved Date:</strong> <%= complaint.formattedResolvedDate %> |
+                    <% } %>
+                    <strong>Votes:</strong> <%= complaint.votes %> |
+                    <strong>Priority:</strong> <span class="priority-<%= complaint.priority || 'medium' %>"><%= complaint.priority || 'Medium' %></span>
+                  </div>
+                  <div class="complaint-description"><%= complaint.description %></div>
+                </div>
+              <% }) %>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    </div>
+  <% }) %>
+
+  <!-- Report Actions -->
+  <div class="report-actions">
+    <h3>Report Generated Successfully</h3>
+    <p>This report has been prepared for submission to the local government authorities.</p>
+    <p>It highlights civic issues that require immediate attention from the relevant departments.</p>
+
+    <button onclick="window.print()" class="btn btn-primary">Print Report</button>
+    <a href="/admin/download-report-pdf" class="btn btn-primary">Download PDF</a>
+    <a href="/admin/dashboard" class="btn btn-secondary">← Back to Dashboard</a>
+  </div>
+
+  <div class="footer">
+    <p><strong>Civic Connect</strong> - Connecting Citizens with Government for Better Civic Services</p>
+    <p>This report is generated automatically based on citizen complaints and should be used to prioritize civic improvement projects.</p>
+  </div>
+
+</body>
+</html>
